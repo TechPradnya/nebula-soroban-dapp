@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import Modal from '../ui/Modal.jsx';
 import { useContractTx } from '../../hooks/useContractTx.js';
@@ -74,10 +74,6 @@ export default function CreateTaskModal({ open, onClose, onCreated }) {
       onCreated?.(saved.data);
       handleClose();
     } catch (err) {
-      // The on-chain leg (useContractTx) already surfaces its own toast on
-      // failure. If the funds escrowed successfully but the metadata write
-      // failed validation, show exactly which fields to fix rather than a
-      // generic toast — the money already moved, so this needs to be fixable.
       if (err instanceof ApiClientError && err.details) {
         setFieldErrors(err.details);
       }
@@ -88,108 +84,115 @@ export default function CreateTaskModal({ open, onClose, onCreated }) {
 
   return (
     <Modal open={open} onClose={handleClose} title="Post a task">
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {fieldErrors.length > 0 && (
-          <div
-            role="alert"
-            className="rounded-xl border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-300"
-          >
-            <ul className="list-disc space-y-1 pl-4">
-              {fieldErrors.map((msg) => (
-                <li key={msg}>{msg}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div>
-          <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-title">
-            Title
-          </label>
-          <input
-            id="task-title"
-            required
-            minLength={5}
-            maxLength={140}
-            value={form.title}
-            onChange={update('title')}
-            className="input-field"
-            placeholder="Build a landing page"
-          />
-        </div>
-        <div>
-          <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-description">
-            Description
-          </label>
-          <textarea
-            id="task-description"
-            required
-            minLength={20}
-            maxLength={5000}
-            rows={4}
-            value={form.description}
-            onChange={update('description')}
-            className="input-field resize-none"
-            placeholder="What needs to get done, and what does &lsquo;done&rsquo; look like?"
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-category">
-              Category
-            </label>
-            <select
-              id="task-category"
-              value={form.category}
-              onChange={update('category')}
-              className="input-field capitalize"
+      <form onSubmit={handleSubmit} noValidate>
+        <div className="space-y-4">
+          {fieldErrors.length > 0 && (
+            <div
+              role="alert"
+              className="rounded-xl border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-300"
             >
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
+              <ul className="list-disc space-y-1 pl-4">
+                {fieldErrors.map((msg) => (
+                  <li key={msg}>{msg}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div>
-            <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-budget">
-              Budget (XLM)
+            <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-title">
+              Title
             </label>
             <input
-              id="task-budget"
+              id="task-title"
               required
-              type="number"
-              min="1"
-              step="0.01"
-              value={form.amountXlm}
-              onChange={update('amountXlm')}
-              className="input-field font-mono"
-              placeholder="500"
+              minLength={5}
+              maxLength={140}
+              value={form.title}
+              onChange={update('title')}
+              className="input-field"
+              placeholder="Build a landing page"
             />
           </div>
-        </div>
-        <div>
-          <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-tags">
-            Tags (comma separated)
-          </label>
-          <input
-            id="task-tags"
-            value={form.tags}
-            onChange={update('tags')}
-            className="input-field"
-            placeholder="react, stellar, ui"
-          />
+          <div>
+            <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-description">
+              Description
+            </label>
+            <textarea
+              id="task-description"
+              required
+              minLength={20}
+              maxLength={5000}
+              rows={4}
+              value={form.description}
+              onChange={update('description')}
+              className="input-field resize-none"
+              placeholder="What needs to get done, and what does &lsquo;done&rsquo; look like?"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-category">
+                Category
+              </label>
+              <select
+                id="task-category"
+                value={form.category}
+                onChange={update('category')}
+                className="input-field capitalize"
+              >
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-budget">
+                Budget (XLM)
+              </label>
+              <input
+                id="task-budget"
+                required
+                type="number"
+                min="1"
+                step="0.01"
+                value={form.amountXlm}
+                onChange={update('amountXlm')}
+                className="input-field font-mono"
+                placeholder="500"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm text-mist-dim" htmlFor="task-tags">
+              Tags (comma separated)
+            </label>
+            <input
+              id="task-tags"
+              value={form.tags}
+              onChange={update('tags')}
+              className="input-field"
+              placeholder="react, stellar, ui"
+            />
+          </div>
+
+          <p className="text-xs text-mist-dim">
+            Submitting escrows the full amount on-chain immediately via your connected wallet. A 10% platform
+            fee is only taken when you approve completed work.
+          </p>
         </div>
 
-        <p className="text-xs text-mist-dim">
-          Submitting escrows the full amount on-chain immediately via your connected wallet. A 10% platform
-          fee is only taken when you approve completed work.
-        </p>
-
-        <button type="submit" disabled={submitting} className="btn-primary w-full">
-          {submitting && <Loader2 size={16} className="animate-spin" aria-hidden="true" />}
-          {submitting ? 'Awaiting wallet signature…' : 'Escrow & post task'}
-        </button>
+        {/* Sticky footer: stays pinned to the bottom of the scrollable modal
+            body (Modal.jsx's wrapper is the scroll container), so the submit
+            button is always reachable regardless of how tall the form gets. */}
+        <div className="sticky bottom-0 -mx-6 mt-4 border-t border-white/10 bg-surface px-6 py-4">
+          <button type="submit" disabled={submitting} className="btn-primary w-full">
+            {submitting && <Loader2 size={16} className="animate-spin" aria-hidden="true" />}
+            {submitting ? 'Awaiting wallet signature…' : 'Escrow & post task'}
+          </button>
+        </div>
       </form>
     </Modal>
   );

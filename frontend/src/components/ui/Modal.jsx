@@ -6,17 +6,11 @@ import { X } from 'lucide-react';
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
-/**
- * Shared modal shell used by every dialog in the app. Handles the
- * accessibility mechanics that are easy to skip under time pressure:
- * - traps Tab/Shift+Tab focus inside the dialog while open
- * - closes on Escape
- * - restores focus to whatever triggered it on close
- * - marks itself up as role="dialog" aria-modal for screen readers
- */
 export default function Modal({ open, onClose, title, children, maxWidthClass = 'max-w-lg' }) {
   const dialogRef = useRef(null);
   const previouslyFocused = useRef(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return undefined;
@@ -28,7 +22,7 @@ export default function Modal({ open, onClose, title, children, maxWidthClass = 
 
     function handleKeyDown(e) {
       if (e.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== 'Tab' || !focusable?.length) return;
@@ -52,7 +46,7 @@ export default function Modal({ open, onClose, title, children, maxWidthClass = 
       document.body.style.overflow = '';
       previouslyFocused.current?.focus?.();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   return createPortal(
     <AnimatePresence>
@@ -66,26 +60,29 @@ export default function Modal({ open, onClose, title, children, maxWidthClass = 
             onClick={onClose}
             aria-hidden="true"
           />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 12 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 12 }}
+          <div
             className={`fixed left-1/2 top-1/2 z-50 w-full ${maxWidthClass} -translate-x-1/2 -translate-y-1/2 px-4`}
             role="dialog"
             aria-modal="true"
             aria-label={title}
             ref={dialogRef}
           >
-            <div className="glass-panel max-h-[85vh] overflow-y-auto p-6">
-              <div className="mb-5 flex items-center justify-between">
-                <h2 className="font-display text-xl font-semibold text-white">{title}</h2>
-                <button onClick={onClose} className="text-mist-dim hover:text-mist" aria-label="Close dialog">
-                  <X size={20} aria-hidden="true" />
-                </button>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 12 }}
+            >
+              <div className="glass-panel flex max-h-[85vh] flex-col overflow-hidden p-6">
+                <div className="mb-5 flex flex-shrink-0 items-center justify-between">
+                  <h2 className="font-display text-xl font-semibold text-white">{title}</h2>
+                  <button onClick={onClose} className="text-mist-dim hover:text-mist" aria-label="Close dialog">
+                    <X size={20} aria-hidden="true" />
+                  </button>
+                </div>
+                <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
               </div>
-              {children}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>,
