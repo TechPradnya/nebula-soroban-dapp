@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #0b0d14;
+    background-image: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79, 70, 229, 0.25), transparent),
+      radial-gradient(ellipse 60% 50% at 90% 10%, rgba(34, 211, 238, 0.12), transparent);
+    background-attachment: fixed;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: rgba(79, 70, 229, 0.4);
+  }
+  :focus-visible {
+    outline: 2px solid #22d3ee;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/[0.04] border border-white/[0.08] backdrop-blur-glass rounded-2xl shadow-glass;
+  }
+  .glass-panel-hover {
+    @apply transition-all duration-300 hover:bg-white/[0.06] hover:border-white/[0.14];
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo to-cyan px-5 py-2.5 font-semibold text-void transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-2.5 font-medium text-mist transition-colors duration-200 hover:bg-white/[0.08] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .input-field {
+    @apply w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 text-mist placeholder:text-mist-dim outline-none transition-colors focus:border-indigo-soft;
+  }
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

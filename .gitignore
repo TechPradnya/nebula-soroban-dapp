@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+
+# Rust
+target/
+**/target/
+
+# Build
+dist/
+build/
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
