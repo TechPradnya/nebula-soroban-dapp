@@ -1,9 +1,9 @@
-const Task = require('../models/Task');
+﻿const Task = require('../models/Task');
 const ApiError = require('../utils/ApiError');
 
 /**
  * Note: creating/accepting/submitting/approving tasks happens on-chain,
- * signed by the user's own wallet — this service never mutates contract
+ * signed by the user's own wallet â€” this service never mutates contract
  * state. It only maintains the off-chain metadata mirror (search,
  * filters, pagination) that the indexer keeps in sync with confirmed
  * contract events.
@@ -36,7 +36,7 @@ async function getTaskByOnChainId(onChainId) {
 
 /**
  * Persists the off-chain metadata for a task immediately after its
- * `create_task` transaction has confirmed on-chain — `onChainId` here is
+ * `create_task` transaction has confirmed on-chain â€” `onChainId` here is
  * the real id decoded from the contract's return value, not a placeholder.
  * If the indexer's `task_created` event handler races this write, both
  * paths converge on the same document via the unique `onChainId` index.
@@ -53,20 +53,27 @@ async function createTaskRecord({
   txHash,
 }) {
   const existing = await Task.findOne({ onChainId });
-  if (existing) throw ApiError.conflict(`Task #${onChainId} already has metadata recorded`);
+  if (existing && existing.description !== 'Metadata pending sync.') {
+    throw ApiError.conflict(`Task #${onChainId} already has metadata recorded`);
+  }
 
-  return Task.create({
-    onChainId,
-    title,
-    description,
-    category,
-    tags,
-    clientAddress,
-    amount,
-    feeBps,
-    status: 'open',
-    txHashes: { created: txHash || null },
-  });
+  return Task.findOneAndUpdate(
+    { onChainId },
+    {
+      $set: {
+        title,
+        description,
+        category,
+        tags,
+        clientAddress,
+        amount,
+        feeBps,
+        status: 'open',
+        'txHashes.created': txHash || null,
+      },
+    },
+    { upsert: true, new: true },
+  );
 }
 
 async function getTasksByAddress(address) {
@@ -76,3 +83,4 @@ async function getTasksByAddress(address) {
 }
 
 module.exports = { listTasks, getTaskByOnChainId, createTaskRecord, getTasksByAddress };
+
