@@ -1,4 +1,4 @@
-const {
+﻿const {
   rpc,
   Contract,
   TransactionBuilder,
@@ -33,7 +33,7 @@ function toScVals(args, spec) {
 
 /**
  * Builds an unsigned, simulated transaction invoking `method` on
- * `contractId`. The backend NEVER holds a user's signing key — this XDR is
+ * `contractId`. The backend NEVER holds a user's signing key â€” this XDR is
  * returned to the frontend, signed there via Freighter/Albedo/xBull
  * through StellarWalletsKit, and the signed XDR is posted back to
  * `submitSignedTransaction`.
@@ -88,7 +88,10 @@ if (sendResult.status === 'ERROR') {
 
   let returnValue = null;
   try {
-    if (response.returnValue) returnValue = scValToNative(response.returnValue);
+    if (response.returnValue) {
+  const native = scValToNative(response.returnValue);
+  returnValue = typeof native === 'bigint' ? native.toString() : native;
+}
   } catch (err) {
     logger.warn(`Could not decode return value for tx ${hash}: ${err.message}`);
   }
@@ -164,3 +167,4 @@ module.exports = {
   getContractEvents,
   getLatestLedger,
 };
+
