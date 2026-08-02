@@ -209,6 +209,7 @@ would flag in review before calling it shippable:
 ### Linked Wallet in Profile
 ![Linked wallet](docs/screenshots/linked_wallets.png)
 
+![CI/CD pipeline running](docs/screenshots/ci_cd_pipeline.png)
 
 
 
