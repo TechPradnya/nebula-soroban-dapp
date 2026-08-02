@@ -216,7 +216,10 @@ would flag in review before calling it shippable:
 
 ## Demo script
 
-See [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) for a 1–2 minute recording script.
+ for a 1–2 minute recording script.
+
+[Video link](https://drive.google.com/file/d/12izYHFgLXpEvENbycrBBKBthehw3Zrar/view?usp=sharing)
+(https://drive.google.com/file/d/12izYHFgLXpEvENbycrBBKBthehw3Zrar/view?usp=sharing)
 
 ## License
 
