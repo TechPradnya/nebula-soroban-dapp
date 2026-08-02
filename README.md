@@ -174,6 +174,43 @@ would flag in review before calling it shippable:
 - **Scalability:** the dashboard's aggregation query is now cached for 15s server-side rather than
   recomputed on every request; added a compound index for "my tasks" queries.
 
+## Screenshots
+
+### Landing Page
+![Landing page](docs/screenshots/landing_page.png)
+
+### Create Account
+![Create account](docs/screenshots/create_account.png)
+
+### Connect Wallet
+![Connect wallet](docs/screenshots/connect_wallet.png)
+
+### Post a Task
+![Post a task](docs/screenshots/post_task.png)
+
+### Sign Transaction in Freighter
+![Sign transaction](docs/screenshots/sign_freighter.png)
+
+### Transaction Confirmed On-Chain
+![Transaction confirmed](docs/screenshots/confirmed_on_chain.png)
+
+### View Transaction on Stellar Expert
+![View on Stellar Expert](docs/screenshots/view_on_stellar.png)
+
+### Staking — Earn XLM
+![Staking rewards](docs/screenshots/xlm_earns.png)
+
+### Dashboard Overview
+![Dashboard overview](docs/screenshots/overview_task.png)
+
+### Activity History Log
+![Activity history](docs/screenshots/history_log.png)
+
+### Linked Wallet in Profile
+![Linked wallet](docs/screenshots/linked_wallets.png)
+
+
+
 ## Demo script
 
 See [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) for a 1–2 minute recording script.
