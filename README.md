@@ -173,7 +173,7 @@ would flag in review before calling it shippable:
   category enums previously retyped across the User/Task/Transaction models and their validation schemas).
 - **Scalability:** the dashboard's aggregation query is now cached for 15s server-side rather than
   recomputed on every request; added a compound index for "my tasks" queries.
-## screenshots
+
 
 ## Demo script
 
